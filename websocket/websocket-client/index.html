@@ -1,0 +1,63 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+    <title>Web sockets test</title>
+	
+	<script src="jquery-min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+	
+	function writeData(evt){
+		document.getElementById("content").innerHTML = evt.data;
+	}
+	
+	function onOpen(evt) {
+		writeData(evt);
+	}
+	function onClose(evt){
+		writeData(evt);
+	}
+	
+	function onError(evt){
+		writeData(evt);
+	}
+	
+	function onMessage(evt){
+		writeData(evt);
+	}
+	
+	function send2Server(){
+		if (document.getElementById("data2Send").value.trim() != "") {
+                ws.send(document.getElementById("data2Send").value.trim());
+                document.getElementById("data2Send").value = "";
+        }
+	}
+	
+	var ws;
+	$(document).ready(function (){
+		try{
+			ws = new WebSocket("ws://localhost:1024");
+			ws.onopen = onOpen;
+			ws.onmessage = onMessage;
+			ws.onerror = onError;
+			ws.onclose = onClose;
+		}catch(ex){
+			console.log("secound");
+			/*try{
+				webSocket = new MozWebSocket("ws://localhost:1024");
+			}catch(ex){
+				console.log("error");
+			}*/
+		}
+		
+	});
+	</script>
+</head>
+
+
+<body>
+	<input type="text" id="data2Send" size ="88"/>
+	<button id="send" type="button" onclick="send2Server();">Send</button>
+	<div id="content"/>
+</body>
+
+</html>
